@@ -24,6 +24,13 @@ function parseInputs {
     exit 1
   fi
 
+  if [ "${INPUT_TG_ACTIONS_VERSION}" != "" ]; then
+    tgVersion=${INPUT_TG_ACTIONS_VERSION}
+  else
+    echo "Input terragrunt_version cannot be empty"
+    exit 1
+  fi
+
   if [ "${INPUT_TF_ACTIONS_SUBCOMMAND}" != "" ]; then
     tfSubcommand=${INPUT_TF_ACTIONS_SUBCOMMAND}
   else
@@ -103,62 +110,94 @@ function installTerraform {
   echo "Successfully unzipped Terraform v${tfVersion}"
 }
 
+function installTerragrunt {
+  if [[ "${tgVersion}" == "latest" ]]; then
+    echo "Checking the latest version of Terragrunt"
+    latestURL=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/gruntwork-io/terragrunt/releases/latest)
+    tgVersion=${latestURL##*/}
+
+    if [[ -z "${tgVersion}" ]]; then
+      echo "Failed to fetch the latest version"
+      exit 1
+    fi
+  fi
+
+  url="https://github.com/gruntwork-io/terragrunt/releases/download/${tgVersion}/terragrunt_linux_386"
+
+  echo "Downloading Terragrunt ${tgVersion}"
+  curl -s -S -L -o /tmp/terragrunt_${tgVersion} ${url}
+  if [ "${?}" -ne 0 ]; then
+    echo "Failed to download Terragrunt v${tgVersion}"
+    exit 1
+  fi
+  echo "Successfully downloaded Terragrunt v${tgVersion}"
+
+  echo "Unzipping Terragrunt v${tgVersion}"
+  unzip -d /usr/local/bin /tmp/terragrunt_${tgVersion} &> /dev/null
+  if [ "${?}" -ne 0 ]; then
+    echo "Failed to unzip Terragrunt ${tgVersion}"
+    exit 1
+  fi
+  echo "Successfully unzipped Terragrunt ${tgVersion}"
+}
+
 function main {
   # Source the other files to gain access to their functions
   scriptDir=$(dirname ${0})
-  source ${scriptDir}/terraform_fmt.sh
-  source ${scriptDir}/terraform_init.sh
-  source ${scriptDir}/terraform_validate.sh
-  source ${scriptDir}/terraform_plan.sh
-  source ${scriptDir}/terraform_apply.sh
-  source ${scriptDir}/terraform_output.sh
-  source ${scriptDir}/terraform_import.sh
-  source ${scriptDir}/terraform_taint.sh
-  source ${scriptDir}/terraform_destroy.sh
+  source ${scriptDir}/terragrunt_fmt.sh
+  source ${scriptDir}/terragrunt_init.sh
+  source ${scriptDir}/terragrunt_validate.sh
+  source ${scriptDir}/terragrunt_plan.sh
+  source ${scriptDir}/terragrunt_apply.sh
+  source ${scriptDir}/terragrunt_output.sh
+  source ${scriptDir}/terragrunt_import.sh
+  source ${scriptDir}/terragrunt_taint.sh
+  source ${scriptDir}/terragrunt_destroy.sh
 
+  installTerraform
   parseInputs
   configureCLICredentials
   cd ${GITHUB_WORKSPACE}/${tfWorkingDir}
 
   case "${tfSubcommand}" in
     fmt)
-      installTerraform
-      terraformFmt ${*}
+      installTerragrunt
+      terragruntFmt ${*}
       ;;
     init)
-      installTerraform
-      terraformInit ${*}
+      installTerragrunt
+      terragruntInit ${*}
       ;;
     validate)
-      installTerraform
-      terraformValidate ${*}
+      installTerragrunt
+      terragruntValidate ${*}
       ;;
     plan)
-      installTerraform
-      terraformPlan ${*}
+      installTerragrunt
+      terragruntPlan ${*}
       ;;
     apply)
-      installTerraform
-      terraformApply ${*}
+      installTerragrunt
+      terragruntApply ${*}
       ;;
     output)
-      installTerraform
-      terraformOutput ${*}
+      installTerragrunt
+      terragruntOutput ${*}
       ;;
     import)
-      installTerraform
-      terraformImport ${*}
+      installTerragrunt
+      terragruntImport ${*}
       ;;
     taint)
-      installTerraform
-      terraformTaint ${*}
+      installTerragrunt
+      terragruntTaint ${*}
       ;;
     destroy)
-      installTerraform
-      terraformDestroy ${*}
+      installTerragrunt
+      terragruntDestroy ${*}
       ;;
     *)
-      echo "Error: Must provide a valid value for terraform_subcommand"
+      echo "Error: Must provide a valid value for terragrunt_subcommand"
       exit 1
       ;;
   esac

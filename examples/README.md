@@ -1,3 +1,3 @@
 # Examples
 
-Here are some examples showing common workflows using Terraform GitHub Actions.
+Here are some examples showing common workflows using Terragrunt GitHub Actions.

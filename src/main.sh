@@ -127,12 +127,12 @@ function installTerragrunt {
   echo "Downloading Terragrunt ${tgVersion}"
   curl -s -S -L -o /tmp/terragrunt_${tgVersion} ${url}
   if [ "${?}" -ne 0 ]; then
-    echo "Failed to download Terragrunt v${tgVersion}"
+    echo "Failed to download Terragrunt ${tgVersion}"
     exit 1
   fi
-  echo "Successfully downloaded Terragrunt v${tgVersion}"
+  echo "Successfully downloaded Terragrunt ${tgVersion}"
 
-  echo "Unzipping Terragrunt v${tgVersion}"
+  echo "Unzipping Terragrunt ${tgVersion}"
   unzip -d /usr/local/bin /tmp/terragrunt_${tgVersion} &> /dev/null
   if [ "${?}" -ne 0 ]; then
     echo "Failed to unzip Terragrunt ${tgVersion}"

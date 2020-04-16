@@ -1,22 +1,22 @@
-# Terraform Backends
+# Terragrunt Backends
 
-Terraform GitHub Actions supports initializing a `backend` block using the `-backend-config` option.
+Terragrunt GitHub Actions supports initializing a `backend` block using the `-backend-config` option.
 
 The example below shows how to pass the `token` and `organization` arguments to the `remote` backend block. The `token` argument is passed using GitHub Actions secrets while the organization is hardcoded.
 
 ```yaml
-name: 'Terraform GitHub Actions'
+name: 'Terragrunt GitHub Actions'
 on:
   - pull_request
 jobs:
-  terraform:
-    name: 'Terraform'
+  terragrunt:
+    name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Terraform Init'
-        uses: hashicorp/terraform-github-actions@master
+      - name: 'Terragrunt Init'
+        uses: hashicorp/terragrunt-github-actions@master
         with:
           tf_actions_version: 0.12.13
           tf_actions_subcommand: 'init'

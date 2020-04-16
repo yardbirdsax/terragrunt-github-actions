@@ -1,14 +1,14 @@
-# Terraform Output
+# Terragrunt Output
 
 If you need the outputs of your Terraform configuration later in your GitHub Actions workflow, you can use the `output` subcommand.
 
 ```yaml
-name: 'Terraform GitHub Actions'
+name: 'Terragrunt GitHub Actions'
 on:
   - push
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -18,6 +18,7 @@ jobs:
         uses: hashicorp/terraform-github-actions@master
         with:
           tf_actions_version: 0.12.13
+          tg_actions_version: 'latest'
           tf_actions_subcommand: 'output'
           tf_actions_working_dir: '.'
       - name: 'Use Terraform Output'

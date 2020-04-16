@@ -4,21 +4,21 @@ Arguments can be passed to each subcommand in two ways.
 
 ## Using Arguments
 
-GitHub Actions supports an `args` attribute that will pass arguments to the Terraform subcommand. Using this `args` attribute will place the arguments at the end of the entire `terraform` command, even after all of the arguments defined in the source code. In this example, the argument `-var="env=dev"` will be appended to the `terraform init` command.
+GitHub Actions supports an `args` attribute that will pass arguments to the Terragrunt subcommand. Using this `args` attribute will place the arguments at the end of the entire `terragrunt` command, even after all of the arguments defined in the source code. In this example, the argument `-var="env=dev"` will be appended to the `terragrunt init` command.
 
 ```yaml
-name: 'Terraform GitHub Actions'
+name: 'Terragrunt GitHub Actions'
 on:
   - pull_request
 jobs:
-  terraform:
-    name: 'Terraform'
+  terragrunt:
+    name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Terraform Init'
-        uses: hashicorp/terraform-github-actions@master
+      - name: 'Terragrunt Init'
+        uses: hashicorp/terragrunt-github-actions@master
         with:
           tf_actions_version: 0.12.13
           tf_actions_subcommand: 'init'
@@ -32,21 +32,21 @@ jobs:
 
 ## Using Environment Variables
 
-Terraform supports environment variables named `TF_CLI_ARGS` and `TF_CLI_ARG_name` where `name` is the subcommand that is being executed. Using these environment variables will place the arguments after the subcommand but before any arguments defined in the source code. In this example, the argument `-var="env=dev"` will be appended to the `terraform init` command.
+Terragrunt supports environment variables named `TF_CLI_ARGS` and `TF_CLI_ARG_name` where `name` is the subcommand that is being executed. Using these environment variables will place the arguments after the subcommand but before any arguments defined in the source code. In this example, the argument `-var="env=dev"` will be appended to the `terragrunt init` command.
 
 ```yaml
-name: 'Terraform GitHub Actions'
+name: 'Terragrunt GitHub Actions'
 on:
   - pull_request
 jobs:
-  terraform:
-    name: 'Terraform'
+  terragrunt:
+    name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Terraform Init'
-        uses: hashicorp/terraform-github-actions@master
+      - name: 'Terragrunt Init'
+        uses: hashicorp/terragrunt-github-actions@master
         with:
           tf_actions_version: 0.12.13
           tf_actions_subcommand: 'init'

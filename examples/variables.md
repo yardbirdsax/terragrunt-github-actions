@@ -1,4 +1,4 @@
-# Terraform Variables
+# Terragrunt Variables
 
 Variables can be configured directly in the GitHub Actions workflow YAML a few ways.
 
@@ -7,20 +7,21 @@ Variables can be configured directly in the GitHub Actions workflow YAML a few w
 This example shows how to pass variables using the `-var` argument.
 
 ```yaml
-name: 'Terraform GitHub Actions'
+name: 'Terragrunt GitHub Actions'
 on:
   - pull_request
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Terraform Init'
+      - name: 'Terragrunt Init'
         uses: hashicorp/terraform-github-actions@master
         with:
           tf_actions_version: 0.12.13
+          tg_actions_version: 'latest'
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: '.'
           tf_actions_comment: true
@@ -32,20 +33,21 @@ jobs:
 This example shows how to use a variable file using the `-var-file` argument.
 
 ```yaml
-name: 'Terraform GitHub Actions'
+name: 'Terragrunt GitHub Actions'
 on:
   - pull_request
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Terraform Init'
+      - name: 'Terragrunt Init'
         uses: hashicorp/terraform-github-actions@master
         with:
           tf_actions_version: 0.12.13
+          tg_actions_version: 'latest'
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: '.'
           tf_actions_comment: true
@@ -62,20 +64,21 @@ The `TF_VAR_name` environment variable can be used to define a value for a varia
 Here, the Terraform variable `env` is set to the value `dev`.
 
 ```yaml
-name: 'Terraform GitHub Actions'
+name: 'Terragrunt GitHub Actions'
 on:
   - pull_request
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terragrunt'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Terraform Init'
+      - name: 'Terragrunt Init'
         uses: hashicorp/terraform-github-actions@master
         with:
           tf_actions_version: 0.12.13
+          tg_actions_version: 'latest'
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: '.'
           tf_actions_comment: true

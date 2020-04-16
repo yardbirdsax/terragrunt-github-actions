@@ -1,20 +1,20 @@
 #!/bin/bash
 
-function terraformFmt {
-  # Eliminate `-recursive` option for Terraform 0.11.x.
+function terragruntFmt {
+  # Eliminate `-recursive` option for Terragrunt 0.11.x.
   fmtRecursive="-recursive"
   if hasPrefix "0.11" "${tfVersion}"; then
     fmtRecursive=""
   fi
 
-  # Gather the output of `terraform fmt`.
-  echo "fmt: info: checking if Terraform files in ${tfWorkingDir} are correctly formatted"
-  fmtOutput=$(terraform fmt -check=true -write=false -diff ${fmtRecursive} ${*} 2>&1)
+  # Gather the output of `terragrunt fmt`.
+  echo "fmt: info: checking if Terragrunt files in ${tfWorkingDir} are correctly formatted"
+  fmtOutput=$(terragrunt fmt -check=true -write=false -diff ${fmtRecursive} ${*} 2>&1)
   fmtExitCode=${?}
 
   # Exit code of 0 indicates success. Print the output and exit.
   if [ ${fmtExitCode} -eq 0 ]; then
-    echo "fmt: info: Terraform files in ${tfWorkingDir} are correctly formatted"
+    echo "fmt: info: Terragrunt files in ${tfWorkingDir} are correctly formatted"
     echo "${fmtOutput}"
     echo
     exit ${fmtExitCode}
@@ -22,7 +22,7 @@ function terraformFmt {
 
   # Exit code of 2 indicates a parse error. Print the output and exit.
   if [ ${fmtExitCode} -eq 2 ]; then
-    echo "fmt: error: failed to parse Terraform files"
+    echo "fmt: error: failed to parse Terragrunt files"
     echo "${fmtOutput}"
     echo
     exit ${fmtExitCode}

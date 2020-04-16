@@ -1,15 +1,15 @@
 #!/bin/bash
 
-function terraformImport {
-  # Gather the output of `terraform import`.
-  echo "import: info: importing Terraform configuration in ${tfWorkingDir}"
-  importOutput=$(terraform import -input=false ${*} 2>&1)
+function terragruntImport {
+  # Gather the output of `terragrunt import`.
+  echo "import: info: importing Terragrunt configuration in ${tfWorkingDir}"
+  importOutput=$(terragrunt import -input=false ${*} 2>&1)
   importExitCode=${?}
   importCommentStatus="Failed"
 
   # Exit code of 0 indicates success with no changes. Print the output and exit.
   if [ ${importExitCode} -eq 0 ]; then
-    echo "import: info: successfully imported Terraform configuration in ${tfWorkingDir}"
+    echo "import: info: successfully imported Terragrunt configuration in ${tfWorkingDir}"
     echo "${importOutput}"
     echo
     exit ${importExitCode}
@@ -17,14 +17,14 @@ function terraformImport {
 
   # Exit code of !0 indicates failure.
   if [ ${importExitCode} -ne 0 ]; then
-    echo "import: error: failed to import Terraform configuration in ${tfWorkingDir}"
+    echo "import: error: failed to import Terragrunt configuration in ${tfWorkingDir}"
     echo "${importOutput}"
     echo
   fi
 
   # Comment on the pull request if necessary.
   if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${tfComment}" == "1" ] && [ "${importCommentStatus}" == "Failed" ]; then
-    importCommentWrapper="#### \`terraform import\` ${importCommentStatus}
+    importCommentWrapper="#### \`terragrunt import\` ${importCommentStatus}
 <details><summary>Show Output</summary>
 
 \`\`\`

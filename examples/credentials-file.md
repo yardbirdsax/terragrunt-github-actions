@@ -16,7 +16,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@master
       - name: 'Terragrunt Init'
-        uses: hashicorp/terragrunt-github-actions@master
+        uses: the-commons-project/terragrunt-github-actions@master
         with:
           tf_actions_version: 0.12.13
           tg_actions_version: 'latest'
@@ -28,7 +28,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Terragrunt Plan'
-        uses: hashicorp/terragrunt-github-actions@master
+        uses: the-commons-project/terragrunt-github-actions@master
         with:
           tf_actions_version: 0.12.13
           tg_actions_version: 'latest'

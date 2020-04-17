@@ -30,7 +30,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@master
       - name: 'Terragrunt Format'
-        uses: hashicorp/terragrunt-github-actions@master
+        uses: the-commons-project/terragrunt-github-actions@master
         with:
           tf_actions_actions_version: ${{ env.tf_version }}
           tg_actions_actions_version: ${{ env.tg_version }}
@@ -40,7 +40,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Terragrunt Init'
-        uses: hashicorp/terragrunt-github-actions@master
+        uses: the-commons-project/terragrunt-github-actions@master
         with:
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
@@ -50,7 +50,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Terragrunt Validate'
-        uses: hashicorp/terragrunt-github-actions@master
+        uses: the-commons-project/terragrunt-github-actions@master
         with:
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
@@ -60,7 +60,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Terragrunt Plan'
-        uses: hashicorp/terragrunt-github-actions@master
+        uses: the-commons-project/terragrunt-github-actions@master
         with:
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}

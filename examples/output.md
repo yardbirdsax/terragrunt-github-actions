@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@master
       - name: 'Terraform Output'
         id: terraform
-        uses: hashicorp/terraform-github-actions@master
+        uses: the-commons-project/terraform-github-actions@master
         with:
           tf_actions_version: 0.12.13
           tg_actions_version: 'latest'

@@ -125,20 +125,20 @@ function installTerragrunt {
   url="https://github.com/gruntwork-io/terragrunt/releases/download/${tgVersion}/terragrunt_linux_amd64"
 
   echo "Downloading Terragrunt ${tgVersion}"
-  curl -s -S -L -o /tmp/terragrunt_${tgVersion} ${url}
+  curl -s -S -L -o /tmp/terragrunt ${url}
   if [ "${?}" -ne 0 ]; then
     echo "Failed to download Terragrunt ${tgVersion}"
     exit 1
   fi
   echo "Successfully downloaded Terragrunt ${tgVersion}"
 
-  echo "Unzipping Terragrunt ${tgVersion}"
-  unzip -d /usr/local/bin /tmp/terragrunt_${tgVersion} &> /dev/null
+  echo "Moving Terragrunt ${tgVersion} to PATH"
+  mv /tmp/terragrunt /usr/local/bin
   if [ "${?}" -ne 0 ]; then
-    echo "Failed to unzip Terragrunt ${tgVersion}"
+    echo "Failed to move Terragrunt ${tgVersion}"
     exit 1
   fi
-  echo "Successfully unzipped Terragrunt ${tgVersion}"
+  echo "Successfully moved Terragrunt ${tgVersion}"
 }
 
 function main {

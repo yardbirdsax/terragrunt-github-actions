@@ -122,7 +122,7 @@ function installTerragrunt {
     fi
   fi
 
-  url="https://github.com/gruntwork-io/terragrunt/releases/download/${tgVersion}/terragrunt_linux_386"
+  url="https://github.com/gruntwork-io/terragrunt/releases/download/${tgVersion}/terragrunt_linux_amd64"
 
   echo "Downloading Terragrunt ${tgVersion}"
   curl -s -S -L -o /tmp/terragrunt_${tgVersion} ${url}
@@ -154,9 +154,9 @@ function main {
   source ${scriptDir}/terragrunt_taint.sh
   source ${scriptDir}/terragrunt_destroy.sh
 
-  installTerraform
   parseInputs
   configureCLICredentials
+  installTerraform
   cd ${GITHUB_WORKSPACE}/${tfWorkingDir}
 
   case "${tfSubcommand}" in

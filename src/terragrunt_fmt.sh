@@ -53,7 +53,7 @@ ${fmtFileDiff}
 
     done
 
-    fmtCommentWrapper="#### \`terraform fmt\` Failed
+    fmtCommentWrapper="#### \`${tfBinary} fmt\` Failed
 ${fmtComment}
 
 *Workflow: \`${GITHUB_WORKFLOW}\`, Action: \`${GITHUB_ACTION}\`, Working Directory: \`${tfWorkingDir}\`, Workspace: \`${tfWorkspace}\`*"

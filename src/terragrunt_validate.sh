@@ -21,7 +21,7 @@ function terragruntValidate {
 
   # Comment on the pull request if necessary.
   if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${tfComment}" == "1" ]; then
-    validateCommentWrapper="#### \`terragrunt validate\` Failed
+    validateCommentWrapper="#### \`${tfBinary} validate\` Failed
 
 \`\`\`
 ${validateOutput}

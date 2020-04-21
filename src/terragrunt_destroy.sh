@@ -24,7 +24,7 @@ function terragruntDestroy {
 
   # Comment on the pull request if necessary.
   if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${tfComment}" == "1" ]; then
-    destroyCommentWrapper="#### \`terragrunt destroy\` ${destroyCommentStatus}
+    destroyCommentWrapper="#### \`${tfBinary} destroy\` ${destroyCommentStatus}
 <details><summary>Show Output</summary>
 
 \`\`\`

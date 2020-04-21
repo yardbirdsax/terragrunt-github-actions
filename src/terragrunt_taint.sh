@@ -26,7 +26,7 @@ function terragruntTaint {
 
   # Comment on the pull request if necessary.
   if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${tfComment}" == "1" ]; then
-    taintCommentWrapper="#### \`terraform taint\` ${taintCommentStatus}
+    taintCommentWrapper="#### \`${tfBinary} taint\` ${taintCommentStatus}
 <details><summary>Show Output</summary>
 
 \`\`\`

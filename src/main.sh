@@ -44,6 +44,11 @@ function parseInputs {
     tfWorkingDir=${INPUT_TF_ACTIONS_WORKING_DIR}
   fi
 
+  tfBinary="terragrunt"
+  if [[ -n "${INPUT_TF_ACTIONS_BINARY}" ]]; then
+    tfBinary=${INPUT_TF_ACTIONS_BINARY}
+  fi
+
   tfComment=0
   if [ "${INPUT_TF_ACTIONS_COMMENT}" == "1" ] || [ "${INPUT_TF_ACTIONS_COMMENT}" == "true" ]; then
     tfComment=1

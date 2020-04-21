@@ -9,7 +9,7 @@ function terragruntFmt {
 
   # Gather the output of `terragrunt fmt`.
   echo "fmt: info: checking if Terragrunt files in ${tfWorkingDir} are correctly formatted"
-  fmtOutput=$(terragrunt fmt -check=true -write=false -diff ${fmtRecursive} ${*} 2>&1)
+  fmtOutput=$(${tfBinary} fmt -check=true -write=false -diff ${fmtRecursive} ${*} 2>&1)
   fmtExitCode=${?}
 
   # Exit code of 0 indicates success. Print the output and exit.
@@ -29,11 +29,11 @@ function terragruntFmt {
   fi
 
   # Exit code of !0 and !2 indicates failure.
-  echo "fmt: error: Terraform files in ${tfWorkingDir} are incorrectly formatted"
+  echo "fmt: error: Terragrunt files in ${tfWorkingDir} are incorrectly formatted"
   echo "${fmtOutput}"
   echo
   echo "fmt: error: the following files in ${tfWorkingDir} are incorrectly formatted"
-  fmtFileList=$(terraform fmt -check=true -write=false -list ${fmtRecursive})
+  fmtFileList=$(${tfBinary} fmt -check=true -write=false -list ${fmtRecursive})
   echo "${fmtFileList}"
   echo
 
@@ -41,7 +41,7 @@ function terragruntFmt {
   if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${tfComment}" == "1" ]; then
     fmtComment=""
     for file in ${fmtFileList}; do
-      fmtFileDiff=$(terraform fmt -check=true -write=false -diff "${file}" | sed -n '/@@.*/,//{/@@.*/d;p}')
+      fmtFileDiff=$(${tfBinary} fmt -check=true -write=false -diff "${file}" | sed -n '/@@.*/,//{/@@.*/d;p}')
       fmtComment="${fmtComment}
 <details><summary><code>${tfWorkingDir}/${file}</code></summary>
 

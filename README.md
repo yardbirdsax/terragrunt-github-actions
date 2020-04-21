@@ -32,11 +32,12 @@ jobs:
       - name: 'Terragrunt Format'
         uses: the-commons-project/terragrunt-github-actions@master
         with:
-          tf_actions_actions_version: ${{ env.tf_version }}
-          tg_actions_actions_version: ${{ env.tg_version }}
-          tf_actions_actions_subcommand: 'fmt'
-          tf_actions_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_actions_comment: true
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_binary: 'terraform'
+          tf_actions_subcommand: 'fmt'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Terragrunt Init'
@@ -54,6 +55,7 @@ jobs:
         with:
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
+          tf_actions_binary: 'terraform'
           tf_actions_subcommand: 'validate'
           tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
@@ -80,6 +82,7 @@ Inputs configure Terraform GitHub Actions to perform different actions.
 | Input Name                          | Description                                                | Required |
 |:------------------------------------|:-----------------------------------------------------------|:--------:|
 | tf_actions_subcommand               | The Terraform/Terragrunt  subcommand to execute.           | `Yes`    |
+| tf_actions_binary                   | The binary to run the commands with                        | `No`     |
 | tf_actions_version                  | The Terraform version to install and execute. If set to `latest`, the latest stable version will be used. | `Yes` |
 | tg_actions_version                  | The Terragrunt version to install and execute. If set to `latest`, the latest stable version will be used. | `Yes` |
 | tf_actions_cli_credentials_hostname | Hostname for the CLI credentials file. Defaults to `app.terraform.io`. | `No` |

@@ -8,6 +8,9 @@ inputs:
   tf_actions_subcommand:
     description: 'Terraform or Terragrunt subcommand to execute.'
     required: true
+  tf_actions_binary:
+    description: 'Binary to use. Terraform or Terragrunt'
+    default: 'terragrunt'
   tf_actions_version:
     description: 'Terraform version to install.'
     required: true

@@ -3,7 +3,7 @@
 function terragruntImport {
   # Gather the output of `terragrunt import`.
   echo "import: info: importing Terragrunt configuration in ${tfWorkingDir}"
-  importOutput=$(terragrunt import -input=false ${*} 2>&1)
+  importOutput=$(${tfBinary} import -input=false ${*} 2>&1)
   importExitCode=${?}
   importCommentStatus="Failed"
 

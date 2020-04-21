@@ -4,7 +4,7 @@ function terragruntTaint {
   # Gather the output of `terragrunt taint`.
   echo "taint: info: tainting terragrunt configuration in ${tfWorkingDir}"
   #taintOutput=$(terragrunt taint ${*} 2>&1)
-  taintOutput=$(for resource in ${*}; do terragrunt taint -allow-missing $resource; done 2>&1)
+  taintOutput=$(for resource in ${*}; do ${tfBinary} taint -allow-missing $resource; done 2>&1)
   taintExitCode=${?}
   taintCommentStatus="Failed"
 

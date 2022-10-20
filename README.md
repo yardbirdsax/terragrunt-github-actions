@@ -90,6 +90,8 @@ Inputs configure Terraform GitHub Actions to perform different actions.
 | tf_actions_comment                  | Whether or not to comment on GitHub pull requests. Defaults to `true`. | `No` |
 | tf_actions_working_dir              | The working directory to change into before executing Terragrunt subcommands. Defaults to the root of the GitHub repository. | `No` |
 | tf_actions_fmt_write                | Whether or not to write `fmt` changes to source files. Defaults to `false`. | `No` |
+| tf_actions_pre_commands             | An arbitrary series of commands to execute before running the specified command. This can be used to customize the Docker execution environment. If any of these commands need to set environment variables required at the time `terragrunt` is executed, you must add them to the file at the path defined by the `ENV_VAR_FILE` environment variable as a key/value pair, like this:<br/> `echo "FOO=bar" >> ${ENV_VAR_FILE}`. | `No` |
+
 
 ## Outputs
 

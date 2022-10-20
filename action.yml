@@ -33,6 +33,19 @@ inputs:
   tf_actions_fmt_write:
     description: 'Write Terragrunt fmt changes to source files.'
     default: false
+  tf_actions_pre_commands:
+    description: >
+      An arbitrary series of commands to execute before running the specified command.
+      This can be used to customize the Docker execution environment. If any of these commands
+      need to set environment variables required at the time `terragrunt` is executed, you must
+      add them to the file at the path defined by the `ENV_VAR_FILE` environment variable as a
+      key/value pair, like this:
+
+      ```
+      echo "FOO=bar" >> ${ENV_VAR_FILE}
+      ```
+    default: ''
+    required: false
 outputs:
   tf_actions_output:
     description: 'The Terragrunt outputs in JSON format.'

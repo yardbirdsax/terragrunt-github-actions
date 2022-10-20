@@ -73,6 +73,8 @@ function parseInputs {
   if [ -n "${TF_WORKSPACE}" ]; then
     tfWorkspace="${TF_WORKSPACE}"
   fi
+
+  tfPreCommands="${INPUT_TF_ACTIONS_PRE_COMMANDS}"
 }
 
 function configureCLICredentials {
@@ -139,12 +141,33 @@ function installTerragrunt {
 
   echo "Moving Terragrunt ${tgVersion} to PATH"
   chmod +x /tmp/terragrunt
-  mv /tmp/terragrunt /usr/local/bin/terragrunt 
+  mv /tmp/terragrunt /usr/local/bin/terragrunt
   if [ "${?}" -ne 0 ]; then
     echo "Failed to move Terragrunt ${tgVersion}"
     exit 1
   fi
   echo "Successfully moved Terragrunt ${tgVersion}"
+}
+
+function executePreCommands {
+  if [ -n "${tfPreCommands}" ]; then
+    echo "Executing pre commands"
+
+    local -r preCommandsScript=/tmp/preCommands.sh
+    export ENV_VAR_FILE=/tmp/envVars.sh
+    printf "%s" "${tfPreCommands}" > ${preCommandsScript}
+    chmod +x ${preCommandsScript}
+    chmod +x ${ENV_VAR_FILE}
+
+    local -r stopToken=$(uuidgen)
+    echo "::stop-commands::${stopToken}"
+    bash -eo pipefail ${preCommandsScript}
+    echo "::start-commands::${stopToken}"
+    if [ -f "${ENV_VAR_FILE}" ]; then
+      echo "loading environment variables from pre commands"
+      export $(cat ${ENV_VAR_FILE} | xargs -0)
+    fi
+  fi
 }
 
 function main {
@@ -163,6 +186,7 @@ function main {
   parseInputs
   configureCLICredentials
   installTerraform
+  executePreCommands
   cd ${GITHUB_WORKSPACE}/${tfWorkingDir}
 
   case "${tfSubcommand}" in

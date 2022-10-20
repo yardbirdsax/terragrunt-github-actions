@@ -1,0 +1,39 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+jobs:
+  release:
+    name: Create GitHub release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get Version Number
+        id: version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: true
+      - name: Build Docker container
+        shell: bash
+        run: docker build . -t ${{ github.repository }}:${{ github.sha }}
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ github.repository }}:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+      - name: Generate release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create \
+            --title "${{ steps.version.outputs.new_tag }}" \
+            --notes "${{ steps.version.outputs.changelog }}" \
+            "${{ steps.version.outputs.new_tag }}"

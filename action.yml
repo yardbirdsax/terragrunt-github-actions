@@ -61,7 +61,7 @@ runs:
   using: 'docker'
   image: docker://ppapishetty0209/terragrunt-github-actions:latest
   args: 
-    - '--user runner'
+    - --user runner
 
 
 

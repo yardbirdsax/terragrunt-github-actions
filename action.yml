@@ -72,5 +72,6 @@ runs:
         echo "Hello World"
         ls -lrt
         echo $HOME
-        src/main.sh
+        which docker
+        docker ps
       shell: bash

@@ -60,6 +60,8 @@ runs:
     DOCKER: '/usr/local/bin/docker'
   using: 'docker'
   image: docker://ppapishetty0209/terragrunt-github-actions:latest
+  args: 
+    - '--user runner'
 
 
 

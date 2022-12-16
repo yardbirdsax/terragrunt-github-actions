@@ -58,7 +58,7 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - run: ./src/main.sh
+    - run: /src/main.sh
       shell: bash
   
   

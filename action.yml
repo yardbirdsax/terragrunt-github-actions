@@ -1,3 +1,15 @@
+name: Set up binaries
+runs:
+  using: 'composite'
+  steps:
+    - run: |
+        echo "Hello World"
+        ls -lrt
+        echo $HOME
+        src/main.sh
+      shell: bash
+
+
 name: 'Terragrunt GitHub Actions'
 description: 'Runs Terragrunt commands via GitHub Actions.'
 author:  'HashiCorp, Inc. Terraform Team <terraform@hashicorp.com>'

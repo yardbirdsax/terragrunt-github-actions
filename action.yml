@@ -56,12 +56,13 @@ outputs:
   tf_actions_fmt_written:
     description: 'Whether or not the Terragrunt formatting was written to source files.'
 runs:
-  env:
-    DOCKER: '/usr/local/bin/docker'
+#  env:
+#    DOCKER: '/usr/local/bin/docker'
   using: 'docker'
-  image: docker://ppapishetty0209/terragrunt-github-actions:latest
-  args: 
-    - --user runner
+  image: './Dockerfile'
+#  image: docker://ppapishetty0209/terragrunt-github-actions:latest
+#  args: 
+#    - --user runner
 
 
 

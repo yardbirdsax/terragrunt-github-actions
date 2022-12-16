@@ -57,4 +57,4 @@ outputs:
     description: 'Whether or not the Terragrunt formatting was written to source files.'
 runs:
   using: 'docker'
-  image: 'ppapishetty0209/terragrunt-github-actions:latest'
+  image: docker://ppapishetty0209/terragrunt-github-actions:latest

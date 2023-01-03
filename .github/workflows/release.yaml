@@ -17,23 +17,56 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dry_run: true
-      - name: Build Docker container
-        shell: bash
-        run: docker build . -t ${{ github.repository }}:${{ github.sha }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64
+          push: false
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:latest
+            ghcr.io/ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ github.sha }}
+            ghcr.io/ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ steps.version.outputs.new_version }}
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '${{ github.repository }}:${{ github.sha }}'
+          image-ref: '${{ github.repository_owner }}/terragrunt-github-actions:${{ github.sha }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-      - name: Generate release
+      - name: Push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:latest
+            ghcr.io/ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ github.sha }}
+            ghcr.io/ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ steps.version.outputs.new_version }}
+      - name: Template action metadata file
+        shell: bash
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_TAG: "${{ steps.version.outputs.new_version }}"
         run: |
-          gh release create \
-            --title "${{ steps.version.outputs.new_tag }}" \
-            --notes "${{ steps.version.outputs.changelog }}" \
-            "${{ steps.version.outputs.new_tag }}"
+          make template
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        name: commit back action changes
+        with:
+          commit_message: "auto-commit action.yml changes"
+          file_pattern: action.yml
+          skip_checkout: true
+          skip_fetch: true
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          tag_name: ${{ steps.version.outputs.new_tag }}

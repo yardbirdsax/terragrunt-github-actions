@@ -4,4 +4,4 @@ template:
 		GIT_TAG=$$(git rev-parse HEAD); \
 		export GIT_TAG; \
 	fi && \
-	docker run -e GIT_TAG -v $$PWD:/workspace hairyhenderson/gomplate:stable -f /workspace/action.yml.tpl -o /workspace/action.yml
+	docker run -e GIT_TAG -e GITHUB_OWNER -v $$PWD:/workspace hairyhenderson/gomplate:stable -f /workspace/action.yml.tpl -o /workspace/action.yml

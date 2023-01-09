@@ -7,6 +7,7 @@ jobs:
   release:
     permissions:
       packages: write
+      contents: write
 
     name: Create GitHub release
     runs-on: ubuntu-latest

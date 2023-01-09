@@ -57,4 +57,4 @@ outputs:
     description: 'Whether or not the Terragrunt formatting was written to source files.'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/wwsean08/terragrunt-github-actions:{{ getenv "GIT_TAG" }}'
+  image: 'docker://ghcr.io/{{ getenv "GITHUB_OWNER" }}/terragrunt-github-actions:{{ getenv "GIT_TAG" }}'

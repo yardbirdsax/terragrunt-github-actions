@@ -9,7 +9,8 @@ function terragruntShow {
   # Exit code of 0 indicates success with no changes. Print the output and exit.
   if [ ${showExitCode} -eq 0 ]; then
     echo "plan: info: successfully showing Terragrunt configuration in ${tfWorkingDir}"
-    echo "${showOutput}"
+    echo ${showOutput}
+    echo "tf_actions_output=${showOutput}" >> $GITHUB_OUTPUT
     echo
 
   else

@@ -3,7 +3,7 @@
 function terragruntShow {
   # Gather the output of `terragrunt plan`.
   echo "show: info: planning Terragrunt configuration in ${tfWorkingDir}"
-  showOutput=$(${tfBinary} show ${*} 2>&1)
+  showOutput=$(${tfBinary} show ${*})
   showExitCode=${?}
   planHasChanges=false
   planCommentStatus="Failed"

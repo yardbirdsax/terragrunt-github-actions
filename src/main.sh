@@ -230,6 +230,7 @@ function main {
     show)
       installTerragrunt
       terragruntShow ${*}
+      ;;
     *)
       echo "Error: Must provide a valid value for terragrunt_subcommand"
       exit 1

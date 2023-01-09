@@ -5,6 +5,9 @@ on:
       - main
 jobs:
   release:
+    permissions:
+      packages: write
+
     name: Create GitHub release
     runs-on: ubuntu-latest
     steps:
@@ -51,8 +54,8 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:latest
-            ghcr.io/ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ github.sha }}
-            ghcr.io/ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ steps.version.outputs.new_version }}
+            ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ steps.version.outputs.new_version }}
       - name: Template action metadata file
         shell: bash
         env:

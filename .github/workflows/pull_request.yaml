@@ -30,7 +30,7 @@ jobs:
           push: false
           tags: |
             ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:latest
-            ghcr.io/ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ steps.version.outputs.new_version }}-next
+            ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ steps.version.outputs.new_version }}-next
             ${{ github.repository }}:${{ github.sha }}
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -48,7 +48,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ steps.version.outputs.new_version }}-next
+            ghcr.io/${{ github.repository_owner }}/terragrunt-github-actions:${{ steps.version.outputs.new_version }}-next
       - name: Template action metadata file
         shell: bash
         env:

@@ -182,6 +182,7 @@ function main {
   source ${scriptDir}/terragrunt_import.sh
   source ${scriptDir}/terragrunt_taint.sh
   source ${scriptDir}/terragrunt_destroy.sh
+  source ${scriptDir}/terragrunt_show.sh
 
   parseInputs
   configureCLICredentials
@@ -225,6 +226,10 @@ function main {
     destroy)
       installTerragrunt
       terragruntDestroy ${*}
+      ;;
+    show)
+      installTerragrunt
+      terragruntShow ${*}
       ;;
     *)
       echo "Error: Must provide a valid value for terragrunt_subcommand"

@@ -183,6 +183,7 @@ function main {
   source ${scriptDir}/terragrunt_taint.sh
   source ${scriptDir}/terragrunt_destroy.sh
   source ${scriptDir}/terragrunt_show.sh
+  source ${scriptDir}/terragrunt_json_file.sh
 
   parseInputs
   configureCLICredentials
@@ -230,6 +231,10 @@ function main {
     show)
       installTerragrunt
       terragruntShow ${*}
+      ;;
+    show_json)
+      installTerragrunt
+      terragruntJsonFile
       ;;
     *)
       echo "Error: Must provide a valid value for terragrunt_subcommand"

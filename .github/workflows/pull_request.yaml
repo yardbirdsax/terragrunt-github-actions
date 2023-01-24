@@ -53,6 +53,7 @@ jobs:
         shell: bash
         env:
           GIT_TAG: "${{ steps.version.outputs.new_version }}-next"
+          GITHUB_OWNER: "${{ github.repository_owner }}"
         run: |
           make template
       - uses: stefanzweifel/git-auto-commit-action@v4

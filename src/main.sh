@@ -75,6 +75,9 @@ function parseInputs {
   fi
 
   tfPreCommands="${INPUT_TF_ACTIONS_PRE_COMMANDS}"
+
+  downloadRetryAttempts="${INPUT_DOWNLOAD_RETRY_ATTEMPTS}"
+  downloadRetryMaxTime="${INPUT_DOWNLOAD_MAX_TIME}"
 }
 
 function configureCLICredentials {
@@ -90,7 +93,7 @@ EOF
 function installTerraform {
   if [[ "${tfVersion}" == "latest" ]]; then
     echo "Checking the latest version of Terraform"
-    tfVersion=$(curl -sL https://releases.hashicorp.com/terraform/index.json | jq -r '.versions[].version' | grep -v '[-].*' | sort -rV | head -n 1)
+    tfVersion=$(curl --retry-max-time ${downloadRetryMaxTime} --retry ${downloadRetryAttempts} --retry-connrefused -sL https://releases.hashicorp.com/terraform/index.json | jq -r '.versions[].version' | grep -v '[-].*' | sort -rV | head -n 1)
 
     if [[ -z "${tfVersion}" ]]; then
       echo "Failed to fetch the latest version"
@@ -101,7 +104,7 @@ function installTerraform {
   url="https://releases.hashicorp.com/terraform/${tfVersion}/terraform_${tfVersion}_linux_amd64.zip"
 
   echo "Downloading Terraform v${tfVersion}"
-  curl -s -S -L -o /tmp/terraform_${tfVersion} ${url}
+  curl --retry-max-time ${downloadRetryMaxTime} --retry ${downloadRetryAttempts} --retry-all-errors -s -S -L -o /tmp/terraform_${tfVersion} ${url}
   if [ "${?}" -ne 0 ]; then
     echo "Failed to download Terraform v${tfVersion}"
     exit 1
@@ -120,7 +123,7 @@ function installTerraform {
 function installTerragrunt {
   if [[ "${tgVersion}" == "latest" ]]; then
     echo "Checking the latest version of Terragrunt"
-    latestURL=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/gruntwork-io/terragrunt/releases/latest)
+    latestURL=$(curl --retry-max-time ${downloadRetryMaxTime} --retry ${downloadRetryAttempts} --retry-connrefused -Ls -o /dev/null -w %{url_effective} https://github.com/gruntwork-io/terragrunt/releases/latest)
     tgVersion=${latestURL##*/}
 
     if [[ -z "${tgVersion}" ]]; then
@@ -132,7 +135,7 @@ function installTerragrunt {
   url="https://github.com/gruntwork-io/terragrunt/releases/download/${tgVersion}/terragrunt_linux_amd64"
 
   echo "Downloading Terragrunt ${tgVersion}"
-  curl -s -S -L -o /tmp/terragrunt ${url}
+  curl --retry-max-time ${downloadRetryMaxTime} --retry ${downloadRetryAttempts} --retry-all-errors -s -S -L -o /tmp/terragrunt ${url}
   if [ "${?}" -ne 0 ]; then
     echo "Failed to download Terragrunt ${tgVersion}"
     exit 1

@@ -46,6 +46,20 @@ inputs:
       ```
     default: ''
     required: false
+  download_retry_attempts:
+    description: >
+      Sets the maximum number of times the Action will retry downloading various components. This
+      is a PER DOWNLOAD counter; for example, if the Action encounters issues querying for the
+      a version of Terragrunt such that it retries 5 times before succeeding, those retries
+      are not included in subsequent download attempts.
+    default: "5"
+    required: false
+  download_max_time:
+    description: >
+      The maximum time (in seconds) the Action will retry when downloading various components.
+      Just as with 'download_retry_attempts', this is a PER DOWNLOAD timer.
+    default: "30"
+    required: false
 outputs:
   tf_actions_output:
     description: 'The Terragrunt outputs in JSON format.'
@@ -57,4 +71,4 @@ outputs:
     description: 'Whether or not the Terragrunt formatting was written to source files.'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/yardbirdsax/terragrunt-github-actions:1.3.3'
+  image: 'docker://ghcr.io/yardbirdsax/terragrunt-github-actions:1.4.0-next'

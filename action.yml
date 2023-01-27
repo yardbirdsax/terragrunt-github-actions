@@ -71,4 +71,4 @@ outputs:
     description: 'Whether or not the Terragrunt formatting was written to source files.'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/yardbirdsax/terragrunt-github-actions:1.4.1-next'
+  image: 'docker://ghcr.io/yardbirdsax/terragrunt-github-actions:1.4.1'

@@ -237,7 +237,7 @@ function main {
       ;;
     show_json)
       installTerragrunt
-      terragruntJsonFile
+      terragruntJsonFile ${*}
       ;;
     *)
       echo "Error: Must provide a valid value for terragrunt_subcommand"

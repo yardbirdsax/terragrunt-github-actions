@@ -91,6 +91,19 @@ EOF
 }
 
 function installTerraform {
+  now=$(date +'%s')
+  currentTfVersion=""
+
+  if [[ "${tfVersion}" == "latest" ]]; then
+    if [[ -f "/tmp/latest_terraform_version" ]]; then
+      timestamp=$(cat /tmp/latest_terraform_version | jq -r .timestamp)
+      age=$(($now-$timestamp))
+      if [[ $age -lt 600 ]]; then
+        tfVersion=$(cat /tmp/latest_terraform_version | jq -r .version)
+      fi
+    fi
+  fi
+
   if [[ "${tfVersion}" == "latest" ]]; then
     echo "Checking the latest version of Terraform"
     tfVersion=$(curl --retry-max-time ${downloadRetryMaxTime} --retry ${downloadRetryAttempts} --retry-connrefused -sL https://releases.hashicorp.com/terraform/index.json | jq -r '.versions[].version' | grep -v '[-].*' | sort -rV | head -n 1)
@@ -98,6 +111,19 @@ function installTerraform {
     if [[ -z "${tfVersion}" ]]; then
       echo "Failed to fetch the latest version"
       exit 1
+    fi
+
+    jq --null-input \
+      --arg now "$now" \
+      --arg version "$tfVersion" \
+      '{"timestamp": $now, "version": $version}' > /tmp/latest_terraform_version
+  fi
+
+  if [[ -x "/usr/local/bin/terraform" ]];then
+    currentTfVersion=$(/usr/local/bin/terraform version -json | jq -r .terraform_version)
+    if [[ "$currentTfVersion" == "$tfVersion" ]];then
+      echo "Terraform v${tfVersion} already installed"
+      return
     fi
   fi
 
@@ -121,6 +147,19 @@ function installTerraform {
 }
 
 function installTerragrunt {
+  now=$(date +'%s')
+  currentTgVersion=""
+
+  if [[ "${tgVersion}" == "latest" ]]; then
+    if [[ -f "/tmp/latest_terragrunt_version" ]]; then
+      timestamp=$(cat /tmp/latest_terragrunt_version | jq -r .timestamp)
+      age=$(($now-$timestamp))
+      if [[ $age -lt 600 ]]; then
+        tgVersion=$(cat /tmp/latest_terragrunt_version | jq -r .version)
+      fi
+    fi
+  fi
+
   if [[ "${tgVersion}" == "latest" ]]; then
     echo "Checking the latest version of Terragrunt"
     latestURL=$(curl --retry-max-time ${downloadRetryMaxTime} --retry ${downloadRetryAttempts} --retry-connrefused -Ls -o /dev/null -w %{url_effective} https://github.com/gruntwork-io/terragrunt/releases/latest)
@@ -129,6 +168,19 @@ function installTerragrunt {
     if [[ -z "${tgVersion}" ]]; then
       echo "Failed to fetch the latest version"
       exit 1
+    fi
+
+    jq --null-input \
+      --arg now "$now" \
+      --arg version "$tgVersion" \
+      '{"timestamp": $now, "version": $version}' > /tmp/latest_terragrunt_version
+  fi
+
+  if [[ -x /usr/local/bin/terragrunt ]];then
+    currentTgVersion=$(terragrunt --version | cut -d' ' -f3)
+    if [[ "$currentTgVersion" == "$tgVersion" ]];then
+      echo "Terragrunt ${tgVersion} already installed"
+      return
     fi
   fi
 

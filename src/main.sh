@@ -91,33 +91,10 @@ EOF
 }
 
 function installTerraform {
-  if [[ "${tfVersion}" == "latest" ]]; then
-    echo "Checking the latest version of Terraform"
-    tfVersion=$(curl --retry-max-time ${downloadRetryMaxTime} --retry ${downloadRetryAttempts} --retry-connrefused -sL https://releases.hashicorp.com/terraform/index.json | jq -r '.versions[].version' | grep -v '[-].*' | sort -rV | head -n 1)
-
-    if [[ -z "${tfVersion}" ]]; then
-      echo "Failed to fetch the latest version"
-      exit 1
-    fi
-  fi
-
-  url="https://releases.hashicorp.com/terraform/${tfVersion}/terraform_${tfVersion}_linux_amd64.zip"
-
-  echo "Downloading Terraform v${tfVersion}"
-  curl --retry-max-time ${downloadRetryMaxTime} --retry ${downloadRetryAttempts} --retry-all-errors -s -S -L -o /tmp/terraform_${tfVersion} ${url}
-  if [ "${?}" -ne 0 ]; then
-    echo "Failed to download Terraform v${tfVersion}"
-    exit 1
-  fi
-  echo "Successfully downloaded Terraform v${tfVersion}"
-
-  echo "Unzipping Terraform v${tfVersion}"
-  unzip -d /usr/local/bin /tmp/terraform_${tfVersion} &> /dev/null
-  if [ "${?}" -ne 0 ]; then
-    echo "Failed to unzip Terraform v${tfVersion}"
-    exit 1
-  fi
-  echo "Successfully unzipped Terraform v${tfVersion}"
+  echo "setting Terraform version to ${tfVersion}"
+  tfenv use "${tfVersion}"
+  TFENV_TERRAFORM_VERSION="${tfVersion}"
+  export TFENV_TERRAFORM_VERSION
 }
 
 function installTerragrunt {
@@ -186,6 +163,7 @@ function main {
   source ${scriptDir}/terragrunt_taint.sh
   source ${scriptDir}/terragrunt_destroy.sh
   source ${scriptDir}/terragrunt_show.sh
+  source ${scriptDir}/terragrunt_state.sh
   source ${scriptDir}/terragrunt_json_file.sh
 
   parseInputs
@@ -238,6 +216,10 @@ function main {
     show_json)
       installTerragrunt
       terragruntJsonFile ${*}
+      ;;
+    state)
+      installTerragrunt
+      terragruntState ${*}
       ;;
     *)
       echo "Error: Must provide a valid value for terragrunt_subcommand"

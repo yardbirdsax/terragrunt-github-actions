@@ -1,6 +1,6 @@
 FROM alpine:3
 
-RUN ["/bin/sh", "-c", "apk add --update --no-cache bash ca-certificates curl git jq openssh python3 py3-pip uuidgen"]
+RUN ["/bin/sh", "-c", "apk add --update --no-cache bash ca-certificates curl git jq openssh python3 py3-pip uuidgen aws docker"]
 RUN ["pip", "install", "PyYAML==6.0"]
 
 ## Addresses https://avd.aquasec.com/nvd/cve-2022-40674

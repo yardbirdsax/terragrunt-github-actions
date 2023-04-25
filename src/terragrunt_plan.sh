@@ -8,6 +8,10 @@ function terragruntPlan {
   planHasChanges=false
   planCommentStatus="Failed"
 
+  # Pass the directory used for processing terraform to the outputs
+  terraformDir=$(findTerraformDir)
+  echo "tf_actions_terraform_dir='${terraformDir}'" >> ${GITHUB_OUTPUT}
+
   # Exit code of 0 indicates success with no changes. Print the output and exit.
   if [ ${planExitCode} -eq 0 ]; then
     echo "plan: info: successfully planned Terragrunt configuration in ${tfWorkingDir}"

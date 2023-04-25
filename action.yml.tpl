@@ -69,6 +69,8 @@ outputs:
     description: 'The Terragrunt plan output.'
   tf_actions_fmt_written:
     description: 'Whether or not the Terragrunt formatting was written to source files.'
+  tf_actions_terraform_dir:
+    description: 'The path that terragrunt used as the base path for executing terraform.  Contains the .terraform dir.'
 runs:
   using: 'docker'
   image: 'docker://ghcr.io/{{ getenv "GITHUB_OWNER" }}/terragrunt-github-actions:{{ getenv "GIT_TAG" }}'

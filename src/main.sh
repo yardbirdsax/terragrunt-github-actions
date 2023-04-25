@@ -173,6 +173,12 @@ function executePreCommands {
   fi
 }
 
+function findTerraformDir {
+  local dot_terraform_dir=$(find ".terragrunt-cache" -type d -name ".terraform")
+  local terraform_dir=$(dirname $tf_dir)
+  echo "$terraform_dir"
+}
+
 function main {
   # Source the other files to gain access to their functions
   scriptDir=$(dirname ${0})

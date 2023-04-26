@@ -14,7 +14,7 @@ function terragruntFmt {
 
   # Pass the directory used for processing terraform to the outputs
   terraformDir=$(findTerraformDir)
-  echo "tf_actions_terraform_dir='${terraformDir}'" >> ${GITHUB_OUTPUT}
+  echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
 
   # Exit code of 0 indicates success. Print the output and exit.
   if [ ${fmtExitCode} -eq 0 ]; then

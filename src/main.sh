@@ -175,7 +175,7 @@ function executePreCommands {
 
 function findTerraformDir {
   local dot_terraform_dir=$(find ".terragrunt-cache" -type d -name ".terraform")
-  local terraform_dir=$(dirname $tf_dir)
+  local terraform_dir=$(dirname $dot_terraform_dir)
   echo "$terraform_dir"
 }
 

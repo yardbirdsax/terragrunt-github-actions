@@ -200,56 +200,68 @@ function main {
   executePreCommands
   cd ${GITHUB_WORKSPACE}/${tfWorkingDir}
 
+  mainExitCode=0
+
   case "${tfSubcommand}" in
     fmt)
       installTerragrunt
-      terragruntFmt ${*}
+      mainExitCode=$(terragruntFmt ${*})
       ;;
     init)
       installTerragrunt
-      terragruntInit ${*}
+      mainExitCode=$(terragruntInit ${*})
       ;;
     validate)
       installTerragrunt
-      terragruntValidate ${*}
+      mainExitCode=$(terragruntValidate ${*})
       ;;
     plan)
       installTerragrunt
-      terragruntPlan ${*}
+      mainExitCode=$(terragruntPlan ${*})
       ;;
     apply)
       installTerragrunt
-      terragruntApply ${*}
+      mainExitCode=$(terragruntApply ${*})
       ;;
     output)
       installTerragrunt
-      terragruntOutput ${*}
+      mainExitCode=$(terragruntOutput ${*})
       ;;
     import)
       installTerragrunt
-      terragruntImport ${*}
+      mainExitCode=$(terragruntImport ${*})
       ;;
     taint)
       installTerragrunt
-      terragruntTaint ${*}
+      mainExitCode=$(terragruntTaint ${*})
       ;;
     destroy)
       installTerragrunt
-      terragruntDestroy ${*}
+      mainExitCode=$(terragruntDestroy ${*})
       ;;
     show)
       installTerragrunt
-      terragruntShow ${*}
+      mainExitCode=$(terragruntShow ${*})
       ;;
     show_json)
       installTerragrunt
-      terragruntJsonFile ${*}
+      mainExitCode=$(terragruntJsonFile ${*})
       ;;
     *)
       echo "Error: Must provide a valid value for terragrunt_subcommand"
-      exit 1
+      mainExitCode=1
       ;;
   esac
+
+  # Process the working dir if we have a non-errored exit code
+  if [ ${mainExitCode} -ne 1 ]; then
+    # Pass the directory used for processing terraform to the outputs
+    terraformDir=$(findTerraformDir)
+    echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
+  fi
+
+  # Exit with the exit code derived in a function call
+  exit ${mainExitCode}
 }
 
 main "${*}"

@@ -8,17 +8,13 @@ function terragruntTaint {
   taintExitCode=${?}
   taintCommentStatus="Failed"
 
-  # Pass the directory used for processing terraform to the outputs
-  terraformDir=$(findTerraformDir)
-  echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
-
   # Exit code of 0 indicates success with no changes. Print the output and exit.
   if [ ${taintExitCode} -eq 0 ]; then
     taintCommentStatus="Success"
     echo "taint: info: successfully tainted Terragrunt configuration in ${tfWorkingDir}"
     echo "${taintOutput}"
     echo
-    exit ${taintExitCode}
+    return ${taintExitCode}
   fi
 
   # Exit code of !0 indicates failure.
@@ -49,5 +45,5 @@ ${taintOutput}
     echo "${taintPayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${taintCommentsURL}" > /dev/null
   fi
 
-  exit ${taintExitCode}
+  return ${taintExitCode}
 }

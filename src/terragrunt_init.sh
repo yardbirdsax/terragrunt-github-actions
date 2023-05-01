@@ -6,16 +6,12 @@ function terragruntInit {
   initOutput=$(${tfBinary} init -input=false ${*} 2>&1)
   initExitCode=${?}
 
-  # Pass the directory used for processing terraform to the outputs
-  terraformDir=$(findTerraformDir)
-  echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
-
   # Exit code of 0 indicates success. Print the output and exit.
   if [ ${initExitCode} -eq 0 ]; then
     echo "init: info: successfully initialized Terragrunt configuration in ${tfWorkingDir}"
     echo "${initOutput}"
     echo
-    exit ${initExitCode}
+    return ${initExitCode}
   fi
 
   # Exit code of !0 indicates failure.
@@ -41,5 +37,5 @@ ${initOutput}
     echo "${initPayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${initCommentsURL}" > /dev/null
   fi
 
-  exit ${initExitCode}
+  return ${initExitCode}
 }

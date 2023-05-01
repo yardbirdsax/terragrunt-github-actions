@@ -6,16 +6,12 @@ function terragruntValidate {
   validateOutput=$(${tfBinary} validate ${*} 2>&1)
   validateExitCode=${?}
 
-  # Pass the directory used for processing terraform to the outputs
-  terraformDir=$(findTerraformDir)
-  echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
-
   # Exit code of 0 indicates success. Print the output and exit.
   if [ ${validateExitCode} -eq 0 ]; then
     echo "validate: info: successfully validated Terragrunt configuration in ${tfWorkingDir}"
     echo "${validateOutput}"
     echo
-    exit ${validateExitCode}
+    return ${validateExitCode}
   fi
 
   # Exit code of !0 indicates failure.
@@ -41,5 +37,5 @@ ${validateOutput}
     echo "${validatePayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${validateCommentsURL}" > /dev/null
   fi
 
-  exit ${validateExitCode}
+  return ${validateExitCode}
 }

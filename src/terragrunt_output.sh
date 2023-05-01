@@ -6,10 +6,6 @@ function terragruntOutput {
   outputOutput=$(${tfBinary} output -json ${*} 2>&1)
   outputExitCode=${?}
 
-  # Pass the directory used for processing terraform to the outputs
-  terraformDir=$(findTerraformDir)
-  echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
-
   # Exit code of 0 indicates success. Print the output and exit.
   if [ ${outputExitCode} -eq 0 ]; then
     echo "output: info: successfully gathered all the outputs for the Terragrunt configuration in ${tfWorkingDir}"
@@ -22,12 +18,12 @@ function terragruntOutput {
     outputOutput="${outputOutput//$'\r'/'%0D'}"
 
     echo "tf_actions_output='${outputOutput}'" >> ${GITHUB_OUTPUT}
-    exit ${outputExitCode}
+    return ${outputExitCode}
   fi
 
   # Exit code of !0 indicates failure.
   echo "output: error: failed to gather all the outputs for the Terragrunt configuration in ${tfWorkingDir}"
   echo "${outputOutput}"
   echo
-  exit ${outputExitCode}
+  return ${outputExitCode}
 }

@@ -12,16 +12,12 @@ function terragruntFmt {
   fmtOutput=$(${tfBinary} fmt -check=true -write=false -diff ${fmtRecursive} ${*} 2>&1)
   fmtExitCode=${?}
 
-  # Pass the directory used for processing terraform to the outputs
-  terraformDir=$(findTerraformDir)
-  echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
-
   # Exit code of 0 indicates success. Print the output and exit.
   if [ ${fmtExitCode} -eq 0 ]; then
     echo "fmt: info: Terragrunt files in ${tfWorkingDir} are correctly formatted"
     echo "${fmtOutput}"
     echo
-    exit ${fmtExitCode}
+    return ${fmtExitCode}
   fi
 
   # Exit code of 2 indicates a parse error. Print the output and exit.
@@ -29,7 +25,7 @@ function terragruntFmt {
     echo "fmt: error: failed to parse Terragrunt files"
     echo "${fmtOutput}"
     echo
-    exit ${fmtExitCode}
+    return ${fmtExitCode}
   fi
 
   # Exit code of !0 and !2 indicates failure.
@@ -79,5 +75,5 @@ ${fmtComment}
     echo "tf_actions_fmt_written=true" >> ${GITHUB_OUTPUT}
   fi
 
-  exit ${fmtExitCode}
+  return ${fmtExitCode}
 }

@@ -7,10 +7,6 @@ function terragruntApply {
   applyExitCode=${?}
   applyCommentStatus="Failed"
 
-  # Pass the directory used for processing terraform to the outputs
-  terraformDir=$(findTerraformDir)
-  echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
-
   # Exit code of 0 indicates success. Print the output and exit.
   if [ ${applyExitCode} -eq 0 ]; then
     echo "apply: info: successfully applied Terragrunt configuration in ${tfWorkingDir}"
@@ -47,5 +43,5 @@ ${applyOutput}
     echo "${applyPayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${applyCommentsURL}" > /dev/null
   fi
 
-  exit ${applyExitCode}
+  return ${applyExitCode}
 }

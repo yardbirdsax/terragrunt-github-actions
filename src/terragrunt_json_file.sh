@@ -5,5 +5,5 @@ function terragruntJsonFile {
   ${tfBinary} show -json ${*} > tf_plan.json
   showExitCode=${?}
 
-  return ${showExitCode}
+  mainExitCode=${showExitCode}
 }

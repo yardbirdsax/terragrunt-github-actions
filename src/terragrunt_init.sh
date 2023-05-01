@@ -11,7 +11,8 @@ function terragruntInit {
     echo "init: info: successfully initialized Terragrunt configuration in ${tfWorkingDir}"
     echo "${initOutput}"
     echo
-    return ${initExitCode}
+    mainExitCode=${initExitCode}
+    return
   fi
 
   # Exit code of !0 indicates failure.
@@ -37,5 +38,5 @@ ${initOutput}
     echo "${initPayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${initCommentsURL}" > /dev/null
   fi
 
-  return ${initExitCode}
+  mainExitCode=${initExitCode}
 }

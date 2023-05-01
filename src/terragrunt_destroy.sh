@@ -43,5 +43,5 @@ ${destroyOutput}
     echo "${destroyPayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${destroyCommentsURL}" > /dev/null
   fi
 
-  return ${destroyExitCode}
+  mainExitCode=${destroyExitCode}
 }

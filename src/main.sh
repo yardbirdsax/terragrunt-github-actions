@@ -205,47 +205,47 @@ function main {
   case "${tfSubcommand}" in
     fmt)
       installTerragrunt
-      mainExitCode=$(terragruntFmt ${*})
+      terragruntFmt ${*}
       ;;
     init)
       installTerragrunt
-      mainExitCode=$(terragruntInit ${*})
+      terragruntInit ${*}
       ;;
     validate)
       installTerragrunt
-      mainExitCode=$(terragruntValidate ${*})
+      terragruntValidate ${*}
       ;;
     plan)
       installTerragrunt
-      mainExitCode=$(terragruntPlan ${*})
+      terragruntPlan ${*}
       ;;
     apply)
       installTerragrunt
-      mainExitCode=$(terragruntApply ${*})
+      terragruntApply ${*}
       ;;
     output)
       installTerragrunt
-      mainExitCode=$(terragruntOutput ${*})
+      terragruntOutput ${*}
       ;;
     import)
       installTerragrunt
-      mainExitCode=$(terragruntImport ${*})
+      terragruntImport ${*}
       ;;
     taint)
       installTerragrunt
-      mainExitCode=$(terragruntTaint ${*})
+      terragruntTaint ${*}
       ;;
     destroy)
       installTerragrunt
-      mainExitCode=$(terragruntDestroy ${*})
+      terragruntDestroy ${*}
       ;;
     show)
       installTerragrunt
-      mainExitCode=$(terragruntShow ${*})
+      terragruntShow ${*}
       ;;
     show_json)
       installTerragrunt
-      mainExitCode=$(terragruntJsonFile ${*})
+      terragruntJsonFile ${*}
       ;;
     *)
       echo "Error: Must provide a valid value for terragrunt_subcommand"

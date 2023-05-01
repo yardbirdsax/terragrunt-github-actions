@@ -11,7 +11,8 @@ function terragruntValidate {
     echo "validate: info: successfully validated Terragrunt configuration in ${tfWorkingDir}"
     echo "${validateOutput}"
     echo
-    return ${validateExitCode}
+    mainExitCode=${validateExitCode}
+    return
   fi
 
   # Exit code of !0 indicates failure.
@@ -37,5 +38,5 @@ ${validateOutput}
     echo "${validatePayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${validateCommentsURL}" > /dev/null
   fi
 
-  return ${validateExitCode}
+  mainExitCode=${validateExitCode}
 }

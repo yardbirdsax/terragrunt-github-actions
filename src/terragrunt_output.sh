@@ -18,12 +18,13 @@ function terragruntOutput {
     outputOutput="${outputOutput//$'\r'/'%0D'}"
 
     echo "tf_actions_output='${outputOutput}'" >> ${GITHUB_OUTPUT}
-    return ${outputExitCode}
+    mainExitCode=${outputExitCode}
+    return
   fi
 
   # Exit code of !0 indicates failure.
   echo "output: error: failed to gather all the outputs for the Terragrunt configuration in ${tfWorkingDir}"
   echo "${outputOutput}"
   echo
-  return ${outputExitCode}
+  mainExitCode=${outputExitCode}
 }

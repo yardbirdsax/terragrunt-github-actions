@@ -19,5 +19,5 @@ function terragruntShow {
     echo
   fi
 
-  return ${showExitCode}
+  mainExitCode=${showExitCode}
 }

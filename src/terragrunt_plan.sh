@@ -14,7 +14,7 @@ function terragruntPlan {
     echo "${planOutput}"
     echo
     echo "tf_actions_plan_has_changes=${planHasChanges}" >> ${GITHUB_OUTPUT}
-    exit ${planExitCode}
+    mainExitCode=${planExitCode}
   fi
 
   # Exit code of 2 indicates success with changes. Print the output, change the
@@ -71,5 +71,5 @@ ${planOutput}
   planOutput="${planOutput//$'\r'/'%0D'}"
 
   echo "tf_actions_plan_output='${planOutput}'" >> ${GITHUB_OUTPUT}
-  exit ${planExitCode}
+  mainExitCode=${planExitCode}
 }

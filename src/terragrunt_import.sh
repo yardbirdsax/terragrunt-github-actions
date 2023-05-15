@@ -12,7 +12,8 @@ function terragruntImport {
     echo "import: info: successfully imported Terragrunt configuration in ${tfWorkingDir}"
     echo "${importOutput}"
     echo
-    exit ${importExitCode}
+    mainExitCode=${importExitCode}
+    return
   fi
 
   # Exit code of !0 indicates failure.
@@ -43,5 +44,5 @@ ${importOutput}
     echo "${importPayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${importCommentsURL}" > /dev/null
   fi
 
-  exit ${importExitCode}
+  mainExitCode=${importExitCode}
 }

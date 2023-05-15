@@ -14,7 +14,8 @@ function terragruntTaint {
     echo "taint: info: successfully tainted Terragrunt configuration in ${tfWorkingDir}"
     echo "${taintOutput}"
     echo
-    exit ${taintExitCode}
+    mainExitCode=${taintExitCode}
+    return
   fi
 
   # Exit code of !0 indicates failure.
@@ -45,5 +46,5 @@ ${taintOutput}
     echo "${taintPayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${taintCommentsURL}" > /dev/null
   fi
 
-  exit ${taintExitCode}
+  mainExitCode=${taintExitCode}
 }

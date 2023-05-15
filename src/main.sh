@@ -256,7 +256,7 @@ function main {
   # Process the working dir if we have a non-errored exit code
   if [ ${mainExitCode} -ne 1 ]; then
     # Pass the directory used for processing terraform to the outputs
-    terraformDir=$(findTerraformDir)
+    terraformDir="$(findTerraformDir)"
     echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
   fi
 

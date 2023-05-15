@@ -173,6 +173,12 @@ function executePreCommands {
   fi
 }
 
+function findTerraformDir {
+  local dot_terraform_dir=$(find ".terragrunt-cache" -type d -name ".terraform")
+  local terraform_dir=$(dirname $dot_terraform_dir)
+  echo "$terraform_dir"
+}
+
 function main {
   # Source the other files to gain access to their functions
   scriptDir=$(dirname ${0})
@@ -193,6 +199,8 @@ function main {
   installTerraform
   executePreCommands
   cd ${GITHUB_WORKSPACE}/${tfWorkingDir}
+
+  mainExitCode=0
 
   case "${tfSubcommand}" in
     fmt)
@@ -241,9 +249,19 @@ function main {
       ;;
     *)
       echo "Error: Must provide a valid value for terragrunt_subcommand"
-      exit 1
+      mainExitCode=1
       ;;
   esac
+
+  # Process the working dir if we have a non-errored exit code
+  if [ ${mainExitCode} -ne 1 ]; then
+    # Pass the directory used for processing terraform to the outputs
+    terraformDir="$(findTerraformDir)"
+    echo "tf_actions_terraform_dir=${terraformDir}" >> ${GITHUB_OUTPUT}
+  fi
+
+  # Exit with the exit code derived in a function call
+  exit ${mainExitCode}
 }
 
 main "${*}"

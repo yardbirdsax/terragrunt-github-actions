@@ -17,7 +17,8 @@ function terragruntFmt {
     echo "fmt: info: Terragrunt files in ${tfWorkingDir} are correctly formatted"
     echo "${fmtOutput}"
     echo
-    exit ${fmtExitCode}
+    mainExitCode=${fmtExitCode}
+    return
   fi
 
   # Exit code of 2 indicates a parse error. Print the output and exit.
@@ -25,7 +26,8 @@ function terragruntFmt {
     echo "fmt: error: failed to parse Terragrunt files"
     echo "${fmtOutput}"
     echo
-    exit ${fmtExitCode}
+    mainExitCode=${fmtExitCode}
+    return
   fi
 
   # Exit code of !0 and !2 indicates failure.
@@ -75,5 +77,5 @@ ${fmtComment}
     echo "tf_actions_fmt_written=true" >> ${GITHUB_OUTPUT}
   fi
 
-  exit ${fmtExitCode}
+  mainExitCode=${fmtExitCode}
 }

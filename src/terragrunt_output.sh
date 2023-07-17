@@ -17,7 +17,11 @@ function terragruntOutput {
     outputOutput="${outputOutput//$'\n'/'%0A'}"
     outputOutput="${outputOutput//$'\r'/'%0D'}"
 
+    EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+    echo "stdout<<${EOF}" >> ${GITHUB_OUTPUT}
     echo "tf_actions_output='${outputOutput}'" >> ${GITHUB_OUTPUT}
+    echo "${EOF}" >> ${GITHUB_OUTPUT}
+
     mainExitCode=${outputExitCode}
     return
   fi

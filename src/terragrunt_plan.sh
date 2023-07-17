@@ -70,6 +70,9 @@ ${planOutput}
   planOutput="${planOutput//$'\n'/'%0A'}"
   planOutput="${planOutput//$'\r'/'%0D'}"
 
+  EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+  echo "stdout<<${EOF}" >> ${GITHUB_OUTPUT}
   echo "tf_actions_plan_output='${planOutput}'" >> ${GITHUB_OUTPUT}
+  echo "${EOF}" >> ${GITHUB_OUTPUT}
   mainExitCode=${planExitCode}
 }

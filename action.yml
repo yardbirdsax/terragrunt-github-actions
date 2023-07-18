@@ -76,4 +76,4 @@ outputs:
       may be multiple values returned.
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/yardbirdsax/terragrunt-github-actions:1.5.2-next'
+  image: 'docker://ghcr.io/yardbirdsax/terragrunt-github-actions:1.5.2'
